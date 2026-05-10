@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "fr.neriumprod.meteodatasspringapp.dao.mongo")
 public class MongoConfig {
 
-    @Value("${spring.data.mongodb.uri}")
+    @Value("${spring.mongodb.uri}")
     private String mongoUri;
 
     @Bean

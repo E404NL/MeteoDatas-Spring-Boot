@@ -1,0 +1,63 @@
+type Query {
+    # Measure
+    getMeasureById(id: ID!):Measure
+    getAllMeasures: [Measure]
+}
+
+# ///////////////////////////// MUTATIONS /////////////////////////
+
+type Mutation {
+    #Measure
+    createMeasure(measureInput: MeasureInput!): SaveMeasureResponse
+}
+
+# ///////////////////////////// INPUTS /////////////////////////
+input MeasureInput {
+    id: ID
+    thingId: String
+    timestamp: String
+    meteo: MeteoInput
+    battery: BatteryInput
+}
+
+input MeteoInput {
+    temperature: Float
+    humidityRate: Float
+    airPressure: Float
+}
+
+input BatteryInput {
+    batteryState: Int
+    outputVoltage: Float
+}
+
+# ///////////////////////////// RESPONSES /////////////////////////
+
+type SaveMeasureResponse {
+    success: Boolean
+    message: String
+    measure: Measure
+}
+
+# ///////////////////////////// TYPE ENTITIES /////////////////////////
+
+type Measure {
+    id: ID
+    thingId: String
+    timestamp: String
+    meteo: Meteo
+    battery: Battery
+}
+
+type Meteo {
+    temperature: Float
+    humidityRate: Float
+    airPressure: Float
+}
+
+type Battery {
+    batteryState: Int
+    outputVoltage: Float
+}
+
+

@@ -10,7 +10,7 @@ import java.util.Collection;
 public interface MeasureService {
     public Collection<Measure> findAlls();
     public Collection<Measure> findByTimestampBetween(LocalDateTime start, LocalDateTime end);
-    public Measure findByThingId(String thingId);
+    public Collection<Measure> findByThingId(String thingId);
     public Measure findById(String id);
     public Measure save(Measure measure);
     public void delete(Measure measure);

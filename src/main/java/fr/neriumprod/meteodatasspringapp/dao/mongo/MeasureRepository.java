@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-@Repository("mongoResearchRepository")
+@Repository("mongoMeasureRepository")
 public interface MeasureRepository extends MongoRepository<Measure, String> {
     Collection<Measure> findByTimestampBetween(LocalDateTime start, LocalDateTime end);
-    Measure findByThingID(String thingID);
+    Collection<Measure> findByThingID(String thingID);
 }

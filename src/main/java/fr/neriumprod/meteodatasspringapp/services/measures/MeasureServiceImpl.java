@@ -2,10 +2,16 @@ package fr.neriumprod.meteodatasspringapp.services.measures;
 
 import fr.neriumprod.meteodatasspringapp.dao.mongo.MeasureRepository;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 
+@Service
+@AllArgsConstructor
+@Transactional
 public class MeasureServiceImpl implements MeasureService {
     private MeasureRepository measureRepository;
 
@@ -15,7 +21,7 @@ public class MeasureServiceImpl implements MeasureService {
     }
 
     @Override
-    public Measure findByThingId(String thingId) {
+    public Collection<Measure> findByThingId(String thingId) {
         return measureRepository.findByThingID(thingId);
     }
 
