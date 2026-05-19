@@ -1,7 +1,7 @@
 package fr.neriumprod.meteodatasspringapp.entities.mongo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Id;
+import org.springframework.data.annotation.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @Builder
-@Document(collation = "measure")
+@Document(collection = "measure")
 public class Measure {
     @Id
     private String id;

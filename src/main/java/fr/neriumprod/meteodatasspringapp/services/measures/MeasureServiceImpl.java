@@ -2,7 +2,7 @@ package fr.neriumprod.meteodatasspringapp.services.measures;
 
 import fr.neriumprod.meteodatasspringapp.dao.mongo.MeasureRepository;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,6 @@ import java.util.Collection;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class MeasureServiceImpl implements MeasureService {
     private MeasureRepository measureRepository;
 
