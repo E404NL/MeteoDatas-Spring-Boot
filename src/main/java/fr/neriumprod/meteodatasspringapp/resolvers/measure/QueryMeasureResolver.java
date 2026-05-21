@@ -1,8 +1,10 @@
 package fr.neriumprod.meteodatasspringapp.resolvers.measure;
 
-import fr.neriumprod.meteodatasspringapp.dao.mongo.MeasureRepository;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
+import fr.neriumprod.meteodatasspringapp.services.measures.MeasureServiceImpl;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
@@ -11,21 +13,20 @@ import java.util.Collection;
 @Controller
 @AllArgsConstructor
 public class QueryMeasureResolver{
-    private final MeasureRepository measureRepository;
+    private final MeasureServiceImpl measureService;
 
     @QueryMapping
-    public Measure getMeasureById(String id) {
-        return measureRepository.findById(id).orElse(null);
+    public Measure getMeasureById(@Argument @NonNull String id) {
+        return measureService.findById(id);
     }
 
     @QueryMapping
     public Collection<Measure> getAllMeasures() {
-        return measureRepository.findAll();
+        return measureService.findAlls();
     }
 
     @QueryMapping
-    public Collection<Measure> getMeasuresByThingId(String thingId) {
-        return measureRepository.findByThingID(thingId);
+    public Collection<Measure> getMeasuresByThingId(@Argument @NonNull String thingId) {
+        return measureService.findByThingId(thingId);
     }
-
 }

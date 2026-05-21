@@ -1,7 +1,12 @@
 package fr.neriumprod.meteodatasspringapp.services.measures;
 
 import fr.neriumprod.meteodatasspringapp.dao.mongo.MeasureRepository;
+import fr.neriumprod.meteodatasspringapp.entities.mongo.Battery;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
+import fr.neriumprod.meteodatasspringapp.entities.mongo.Meteo;
+import fr.neriumprod.meteodatasspringapp.graphql.input.Battery.BatteryInput;
+import fr.neriumprod.meteodatasspringapp.graphql.input.measure.MeasureInput;
+import fr.neriumprod.meteodatasspringapp.graphql.response.DeleteResponse;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +26,7 @@ public class MeasureServiceImpl implements MeasureService {
 
     @Override
     public Collection<Measure> findByThingId(String thingId) {
-        return measureRepository.findByThingID(thingId);
+        return measureRepository.findByThingId(thingId);
     }
 
     @Override
@@ -35,7 +40,26 @@ public class MeasureServiceImpl implements MeasureService {
     }
 
     @Override
-    public Measure save(Measure measure) {
+    public Measure save(MeasureInput measureInput) {
+        Measure measure = new Measure();
+        measure.setTimestamp(LocalDateTime.now());
+        measure.setThingId(measureInput.getThingId());
+
+        Battery battery = new Battery();
+        if (measureInput.getBatteryInput() != null) {
+            battery.setBatteryState(measureInput.getBatteryInput().getBatteryState());
+            battery.setOutputVoltage(measureInput.getBatteryInput().getOutputVoltage());
+        }
+        measure.setBattery(battery);
+
+        Meteo meteo = new Meteo();
+        if (measureInput.getMeteoInput() != null) {
+            meteo.setAirPressure(measureInput.getMeteoInput().getAirPressure());
+            meteo.setTemperature(measureInput.getMeteoInput().getTemperature());
+            meteo.setHumidityRate(measureInput.getMeteoInput().getHumidityRate());
+        }
+        measure.setMeteo(meteo);
+
         return measureRepository.save(measure);
     }
 
@@ -47,5 +71,10 @@ public class MeasureServiceImpl implements MeasureService {
     @Override
     public void deleteById(String id) {
         measureRepository.deleteById(id);
+    }
+
+    public DeleteResponse deleteAll() {
+        measureRepository.deleteAll();
+        return new DeleteResponse(true, "All measures deleted successfully");
     }
 }

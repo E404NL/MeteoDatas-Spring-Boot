@@ -10,5 +10,5 @@ import java.util.Collection;
 @Repository("mongoMeasureRepository")
 public interface MeasureRepository extends MongoRepository<Measure, String> {
     Collection<Measure> findByTimestampBetween(LocalDateTime start, LocalDateTime end);
-    Collection<Measure> findByThingID(String thingID);
+    Collection<Measure> findByThingId(String thingID);
 }

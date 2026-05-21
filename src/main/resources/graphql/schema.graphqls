@@ -1,21 +1,22 @@
 type Query {
     # Measure
-    getMeasureById(id: ID!):Measure
+    getMeasureById(id: ID!): Measure
     getAllMeasures: [Measure]
+    getMeasuresByThingId(thingId: String!): [Measure]
 }
 
 # ///////////////////////////// MUTATIONS /////////////////////////
 
 type Mutation {
     #Measure
-    createMeasure(measureInput: MeasureInput!): SaveMeasureResponse
+    saveMeasure(measureInput: MeasureInput!): SaveMeasureResponse
+    deleteMeasureById(measureId: ID!): DeleteResponse
+    deleteAllMeasures: DeleteResponse
 }
 
 # ///////////////////////////// INPUTS /////////////////////////
 input MeasureInput {
-    id: ID
     thingId: String
-    timestamp: String
     meteo: MeteoInput
     battery: BatteryInput
 }
@@ -23,7 +24,7 @@ input MeasureInput {
 input MeteoInput {
     temperature: Float
     humidityRate: Float
-    airPressure: Float
+    airPressure: Int
 }
 
 input BatteryInput {
@@ -37,6 +38,11 @@ type SaveMeasureResponse {
     success: Boolean
     message: String
     measure: Measure
+}
+
+type DeleteResponse {
+    success: Boolean
+    message: String
 }
 
 # ///////////////////////////// TYPE ENTITIES /////////////////////////

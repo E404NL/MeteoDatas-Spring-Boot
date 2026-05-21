@@ -22,7 +22,7 @@ public class Measure {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;  // local time at the measure POST request
 
-    private String thingID;     // embedded system ID what's post the request
+    private String thingId;     // embedded system ID what's post the request
 
     private Meteo meteo;    // meteo datas during the measure
 
