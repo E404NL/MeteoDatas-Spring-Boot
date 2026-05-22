@@ -2,7 +2,7 @@ type Query {
     # Measure
     getMeasureById(id: ID!): Measure
     getAllMeasures: [Measure]
-    getMeasuresByThingId(thingId: String!): [Measure]
+    getMeasuresByThingId(thingId: String!): GetMeasuresByThingIdResponse
 }
 
 # ///////////////////////////// MUTATIONS /////////////////////////
@@ -38,6 +38,12 @@ type SaveMeasureResponse {
     success: Boolean
     message: String
     measure: Measure
+}
+
+type GetMeasuresByThingIdResponse{
+    success: Boolean
+    message: String
+    measures: [Measure]
 }
 
 type DeleteResponse {

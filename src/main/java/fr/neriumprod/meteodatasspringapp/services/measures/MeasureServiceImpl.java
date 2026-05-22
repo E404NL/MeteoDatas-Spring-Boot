@@ -7,12 +7,14 @@ import fr.neriumprod.meteodatasspringapp.entities.mongo.Meteo;
 import fr.neriumprod.meteodatasspringapp.graphql.input.Battery.BatteryInput;
 import fr.neriumprod.meteodatasspringapp.graphql.input.measure.MeasureInput;
 import fr.neriumprod.meteodatasspringapp.graphql.response.DeleteResponse;
+import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasuresByThingIdResponse;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
 
 @Service
 @AllArgsConstructor
@@ -25,8 +27,18 @@ public class MeasureServiceImpl implements MeasureService {
     }
 
     @Override
-    public Collection<Measure> findByThingId(String thingId) {
-        return measureRepository.findByThingId(thingId);
+    public GetMeasuresByThingIdResponse findByThingId(String thingId) {
+        Collection<Measure> measuresResponse = measureRepository.findByThingId(thingId);
+        if(measuresResponse.isEmpty()){
+            return new GetMeasuresByThingIdResponse(
+                    false,
+                    "No measure saved under this ID.",
+                    Collections.emptyList());
+        }
+        return new GetMeasuresByThingIdResponse(
+                true,
+                "Success to get measures under the ID : " + thingId,
+                measuresResponse);
     }
 
     @Override

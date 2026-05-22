@@ -1,6 +1,7 @@
 package fr.neriumprod.meteodatasspringapp.resolvers.measure;
 
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
+import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasuresByThingIdResponse;
 import fr.neriumprod.meteodatasspringapp.services.measures.MeasureServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -26,7 +27,7 @@ public class QueryMeasureResolver{
     }
 
     @QueryMapping
-    public Collection<Measure> getMeasuresByThingId(@Argument @NonNull String thingId) {
+    public GetMeasuresByThingIdResponse getMeasuresByThingId(@Argument @NonNull String thingId) {
         return measureService.findByThingId(thingId);
     }
 }

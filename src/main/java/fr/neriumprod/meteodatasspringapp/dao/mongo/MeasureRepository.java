@@ -1,6 +1,7 @@
 package fr.neriumprod.meteodatasspringapp.dao.mongo;
 
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
+import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasuresByThingIdResponse;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
