@@ -4,11 +4,10 @@ import fr.neriumprod.meteodatasspringapp.dao.mongo.MeasureRepository;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Battery;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Meteo;
-import fr.neriumprod.meteodatasspringapp.graphql.input.Battery.BatteryInput;
 import fr.neriumprod.meteodatasspringapp.graphql.input.measure.MeasureInput;
 import fr.neriumprod.meteodatasspringapp.graphql.response.DeleteResponse;
-import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasuresByThingIdResponse;
-import org.springframework.transaction.annotation.Transactional;
+import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasuresCollectionResponse;
+import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetOneMeasureResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,15 +26,15 @@ public class MeasureServiceImpl implements MeasureService {
     }
 
     @Override
-    public GetMeasuresByThingIdResponse findByThingId(String thingId) {
+    public GetMeasuresCollectionResponse findByThingId(String thingId) {
         Collection<Measure> measuresResponse = measureRepository.findByThingId(thingId);
         if(measuresResponse.isEmpty()){
-            return new GetMeasuresByThingIdResponse(
+            return new GetMeasuresCollectionResponse(
                     false,
                     "No measure saved under this ID.",
                     Collections.emptyList());
         }
-        return new GetMeasuresByThingIdResponse(
+        return new GetMeasuresCollectionResponse(
                 true,
                 "Success to get measures under the ID : " + thingId,
                 measuresResponse);
@@ -47,8 +46,18 @@ public class MeasureServiceImpl implements MeasureService {
     }
 
     @Override
-    public Measure findById(String id) {
-        return measureRepository.findById(id).orElse(null);
+    public GetOneMeasureResponse findById(String id) {
+        Measure measure = measureRepository.findById(id).orElse(null);
+        if(measure == null){
+            return new  GetOneMeasureResponse(
+                    false,
+                    "No measure found with this id : " + id,
+                    null);
+        }
+        return new GetOneMeasureResponse(
+                true,
+                "Success to get measure with this id : " + id,
+                measure);
     }
 
     @Override
@@ -76,17 +85,31 @@ public class MeasureServiceImpl implements MeasureService {
     }
 
     @Override
-    public void delete(Measure measure) {
+    public DeleteResponse delete(Measure measure) {
         measureRepository.delete(measure);
+        return new DeleteResponse(true, "Success to delete measure");
     }
 
     @Override
-    public void deleteById(String id) {
-        measureRepository.deleteById(id);
+    public DeleteResponse deleteById(String measureId) {
+        measureRepository.deleteById(measureId);
+        return new DeleteResponse(
+                true,
+                "Success to delete this measure : " + measureId);
+    }
+
+    @Override
+    public DeleteResponse deleteByThingId(String thingId) {
+        measureRepository.deleteByThingId(thingId);
+        return new DeleteResponse(
+                true,
+                "Success to delete measures under the ID : " + thingId);
     }
 
     public DeleteResponse deleteAll() {
         measureRepository.deleteAll();
-        return new DeleteResponse(true, "All measures deleted successfully");
+        return new DeleteResponse(
+                true,
+                "All measures deleted successfully");
     }
 }

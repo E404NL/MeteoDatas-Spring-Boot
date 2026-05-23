@@ -37,4 +37,14 @@ public class MutationMeasureResolver{
         public DeleteResponse deleteAllMeasures() {
                 return measureService.deleteAll();
         }
+
+        @MutationMapping
+        public DeleteResponse deleteById(@Argument @NonNull String measureId) {
+                return measureService.deleteById(measureId);
+        }
+
+        @MutationMapping
+        public DeleteResponse deleteMeasuresByThingId(@Argument @NonNull String thingId) {
+                return measureService.deleteByThingId(thingId);
+        }
 }

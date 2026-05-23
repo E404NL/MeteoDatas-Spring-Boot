@@ -1,8 +1,8 @@
 type Query {
     # Measure
-    getMeasureById(id: ID!): Measure
+    getMeasureById(id: ID!): GetOneMeasureResponse
     getAllMeasures: [Measure]
-    getMeasuresByThingId(thingId: String!): GetMeasuresByThingIdResponse
+    getMeasuresByThingId(thingId: String!): GetMeasuresCollectionResponse
 }
 
 # ///////////////////////////// MUTATIONS /////////////////////////
@@ -10,8 +10,9 @@ type Query {
 type Mutation {
     #Measure
     saveMeasure(measureInput: MeasureInput!): SaveMeasureResponse
-    deleteMeasureById(measureId: ID!): DeleteResponse
+    deleteById(measureId: ID!): DeleteResponse
     deleteAllMeasures: DeleteResponse
+    deleteMeasuresByThingId(thingId : String!): DeleteResponse
 }
 
 # ///////////////////////////// INPUTS /////////////////////////
@@ -40,10 +41,16 @@ type SaveMeasureResponse {
     measure: Measure
 }
 
-type GetMeasuresByThingIdResponse{
+type GetMeasuresCollectionResponse{
     success: Boolean
     message: String
     measures: [Measure]
+}
+
+type GetOneMeasureResponse{
+    success: Boolean
+    message: String
+    measure: Measure
 }
 
 type DeleteResponse {
