@@ -17,6 +17,10 @@ import tools.jackson.databind.ext.javatime.ser.LocalDateTimeSerializer;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
+/**
+ * This class is for add new objects to serialize or parse with graphql
+ * Because some classes are not known for GraphQL
+ */
 @Configuration
 public class GraphQLConfig {
 
@@ -31,6 +35,10 @@ public class GraphQLConfig {
         };
     }
 
+    /**
+     *
+     * @return a LocalDateTime serialized or parsed by input/output with GraphQL
+     */
     public GraphQLScalarType localDateTimeScalar(){
         return GraphQLScalarType.newScalar()
                 .name("LocalDateTime")

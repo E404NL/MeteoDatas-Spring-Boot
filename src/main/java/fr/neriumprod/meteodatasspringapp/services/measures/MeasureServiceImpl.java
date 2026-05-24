@@ -1,11 +1,13 @@
 package fr.neriumprod.meteodatasspringapp.services.measures;
 
 import fr.neriumprod.meteodatasspringapp.dao.mongo.MeasureRepository;
+import fr.neriumprod.meteodatasspringapp.dto.MeasureTemperatureDTO;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Battery;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Meteo;
 import fr.neriumprod.meteodatasspringapp.graphql.input.measure.MeasureInput;
 import fr.neriumprod.meteodatasspringapp.graphql.response.DeleteResponse;
+import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasureTemperatureDTOCollectionResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasuresCollectionResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetOneMeasureResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.measure.SaveMeasureResponse;
@@ -104,18 +106,44 @@ public class MeasureServiceImpl implements MeasureService {
             String thingId, LocalDateTime timeStart, LocalDateTime timeEnd){
         Collection<Measure> measuresResponse = measureRepository
                 .findByThingIdAndTimestampBetween(thingId, timeStart, timeEnd);
+
         if(measuresResponse.isEmpty()){
             return new GetMeasuresCollectionResponse(
                     false,
                     "No measure saved under this ID in these times.",
-                    Collections.emptyList()
-            );
+                    Collections.emptyList());
         }
         return new GetMeasuresCollectionResponse(
                 true,
-                "Success to get measures under the ID : " + thingId + " in these times",
-                measuresResponse
-        );
+                "Success to get measures under the ID : " + thingId
+                        + " in these times : " + timeStart.toString() + " - " + timeEnd.toString(),
+                measuresResponse);
+    }
+
+    /**
+     *
+     * @param thingId, the id of the embedded system what's requesting
+     * @param timeStart, the debut of the timelaps including datas
+     * @param timeEnd, the end of the timelaps including datas
+     * @return a MeasureTemperatureDTO Collection including temperatures and
+     * timestamp in measures saved by an embedded system between two determinated times
+     */
+    public GetMeasureTemperatureDTOCollectionResponse getTemperaturesByThingIdAndDateTimeBetween(
+            String thingId, LocalDateTime timeStart, LocalDateTime timeEnd){
+        Collection<MeasureTemperatureDTO> response = measureRepository
+                .findTemperatureMeasurements(thingId, timeStart, timeEnd);
+
+        if(response.isEmpty()){
+            return new GetMeasureTemperatureDTOCollectionResponse(
+                    false,
+                    "No measures saved under this ID in these times",
+                    Collections.emptyList());
+        }
+        return new GetMeasureTemperatureDTOCollectionResponse(
+                true,
+                "Success to get temperatures on measures under the ID : " + thingId
+                        + " in these times : " + timeStart.toString() + " - " + timeEnd.toString(),
+                response);
     }
 
     /**
@@ -153,6 +181,8 @@ public class MeasureServiceImpl implements MeasureService {
                 "Measure registred with success !",
                 persistedMeasure);
     }
+
+    ///////////////////////////// DELETE ////////////////////////////////////
 
     /**
      *

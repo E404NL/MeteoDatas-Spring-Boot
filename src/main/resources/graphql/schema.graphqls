@@ -6,6 +6,9 @@ type Query {
     getMeasuresByThingIdAndDateTimeBetween(thingId: String!,
         timeStart: LocalDateTime!,
         timeEnd: LocalDateTime!): GetMeasuresCollectionResponse
+    getTemperaturesByThingIdAndDateTimeBetween(thingId: String!,
+        timeStart: LocalDateTime!,
+        timeEnd: LocalDateTime!): GetMeasureTemperatureDTOCollectionResponse
 }
 
 # ///////////////////////////// MUTATIONS /////////////////////////
@@ -50,6 +53,12 @@ type GetMeasuresCollectionResponse{
     measures: [Measure]
 }
 
+type GetMeasureTemperatureDTOCollectionResponse{
+    success: Boolean
+    message: String
+    measureTemperatureDTOCollection: [TemperatureMeasures]
+}
+
 type GetOneMeasureResponse{
     success: Boolean
     message: String
@@ -66,9 +75,14 @@ type DeleteResponse {
 type Measure {
     id: ID
     thingId: String
-    timestamp: String
+    timestamp: LocalDateTime
     meteo: Meteo
     battery: Battery
+}
+
+type TemperatureMeasures{
+    timestamp: LocalDateTime
+    temperature: Float
 }
 
 type Meteo {

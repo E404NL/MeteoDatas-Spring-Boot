@@ -1,6 +1,7 @@
 package fr.neriumprod.meteodatasspringapp.resolvers.measure;
 
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
+import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasureTemperatureDTOCollectionResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasuresCollectionResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetOneMeasureResponse;
 import fr.neriumprod.meteodatasspringapp.services.measures.MeasureServiceImpl;
@@ -39,6 +40,14 @@ public class QueryMeasureResolver{
             @Argument @NonNull LocalDateTime timeStart,
             @Argument @NonNull LocalDateTime timeEnd) {
         return measureService.getMeasuresByThingIdAndDateTimeBetween(thingId, timeStart, timeEnd);
+    }
+
+    @QueryMapping
+    public GetMeasureTemperatureDTOCollectionResponse getTemperaturesByThingIdAndDateTimeBetween(
+            @Argument @NonNull String thingId,
+            @Argument @NonNull LocalDateTime timeStart,
+            @Argument @NonNull LocalDateTime timeEnd){
+        return measureService.getTemperaturesByThingIdAndDateTimeBetween(thingId, timeStart, timeEnd);
     }
 
 }
