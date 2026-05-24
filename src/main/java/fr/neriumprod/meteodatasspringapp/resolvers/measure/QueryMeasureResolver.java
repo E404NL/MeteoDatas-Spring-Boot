@@ -1,31 +1,53 @@
 package fr.neriumprod.meteodatasspringapp.resolvers.measure;
 
-import fr.neriumprod.meteodatasspringapp.dao.mongo.MeasureRepository;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
+import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasureTemperatureDTOCollectionResponse;
+import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasuresCollectionResponse;
+import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetOneMeasureResponse;
+import fr.neriumprod.meteodatasspringapp.services.measures.MeasureServiceImpl;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Controller
 @AllArgsConstructor
 public class QueryMeasureResolver{
-    private final MeasureRepository measureRepository;
+    private final MeasureServiceImpl measureService;
 
     @QueryMapping
-    public Measure getMeasureById(String id) {
-        return measureRepository.findById(id).orElse(null);
+    public GetOneMeasureResponse getMeasureById(@Argument @NonNull String id) {
+        return measureService.findById(id);
     }
 
     @QueryMapping
-    public Collection<Measure> getAllMeasures() {
-        return measureRepository.findAll();
+    public GetMeasuresCollectionResponse getAllMeasures() {
+        return measureService.findAlls();
     }
 
     @QueryMapping
-    public Collection<Measure> getMeasuresByThingId(String thingId) {
-        return measureRepository.findByThingID(thingId);
+    public GetMeasuresCollectionResponse getMeasuresByThingId(@Argument @NonNull String thingId) {
+        return measureService.findByThingId(thingId);
+    }
+
+    @QueryMapping
+    public GetMeasuresCollectionResponse getMeasuresByThingIdAndDateTimeBetween(
+            @Argument @NonNull String thingId,
+            @Argument @NonNull LocalDateTime timeStart,
+            @Argument @NonNull LocalDateTime timeEnd) {
+        return measureService.getMeasuresByThingIdAndDateTimeBetween(thingId, timeStart, timeEnd);
+    }
+
+    @QueryMapping
+    public GetMeasureTemperatureDTOCollectionResponse getTemperaturesByThingIdAndDateTimeBetween(
+            @Argument @NonNull String thingId,
+            @Argument @NonNull LocalDateTime timeStart,
+            @Argument @NonNull LocalDateTime timeEnd){
+        return measureService.getTemperaturesByThingIdAndDateTimeBetween(thingId, timeStart, timeEnd);
     }
 
 }

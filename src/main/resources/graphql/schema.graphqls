@@ -1,21 +1,29 @@
 type Query {
     # Measure
-    getMeasureById(id: ID!):Measure
-    getAllMeasures: [Measure]
+    getMeasureById(id: ID!): GetOneMeasureResponse
+    getAllMeasures: GetMeasuresCollectionResponse
+    getMeasuresByThingId(thingId: String!): GetMeasuresCollectionResponse
+    getMeasuresByThingIdAndDateTimeBetween(thingId: String!,
+        timeStart: LocalDateTime!,
+        timeEnd: LocalDateTime!): GetMeasuresCollectionResponse
+    getTemperaturesByThingIdAndDateTimeBetween(thingId: String!,
+        timeStart: LocalDateTime!,
+        timeEnd: LocalDateTime!): GetMeasureTemperatureDTOCollectionResponse
 }
 
 # ///////////////////////////// MUTATIONS /////////////////////////
 
 type Mutation {
     #Measure
-    createMeasure(measureInput: MeasureInput!): SaveMeasureResponse
+    saveMeasure(measureInput: MeasureInput!): SaveMeasureResponse
+    deleteById(measureId: ID!): DeleteResponse
+    deleteAllMeasures: DeleteResponse
+    deleteMeasuresByThingId(thingId : String!): DeleteResponse
 }
 
 # ///////////////////////////// INPUTS /////////////////////////
 input MeasureInput {
-    id: ID
     thingId: String
-    timestamp: String
     meteo: MeteoInput
     battery: BatteryInput
 }
@@ -23,7 +31,7 @@ input MeasureInput {
 input MeteoInput {
     temperature: Float
     humidityRate: Float
-    airPressure: Float
+    airPressure: Int
 }
 
 input BatteryInput {
@@ -39,14 +47,42 @@ type SaveMeasureResponse {
     measure: Measure
 }
 
+type GetMeasuresCollectionResponse{
+    success: Boolean
+    message: String
+    measures: [Measure]
+}
+
+type GetMeasureTemperatureDTOCollectionResponse{
+    success: Boolean
+    message: String
+    measureTemperatureDTOCollection: [TemperatureMeasures]
+}
+
+type GetOneMeasureResponse{
+    success: Boolean
+    message: String
+    measure: Measure
+}
+
+type DeleteResponse {
+    success: Boolean
+    message: String
+}
+
 # ///////////////////////////// TYPE ENTITIES /////////////////////////
 
 type Measure {
     id: ID
     thingId: String
-    timestamp: String
+    timestamp: LocalDateTime
     meteo: Meteo
     battery: Battery
+}
+
+type TemperatureMeasures{
+    timestamp: LocalDateTime
+    temperature: Float
 }
 
 type Meteo {
@@ -60,4 +96,6 @@ type Battery {
     outputVoltage: Float
 }
 
-
+# ///////////////////////////// SCALAR /////////////////////////
+scalar DateTime
+scalar LocalDateTime
