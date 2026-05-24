@@ -6,6 +6,7 @@ import fr.neriumprod.meteodatasspringapp.entities.mongo.Meteo;
 import fr.neriumprod.meteodatasspringapp.graphql.input.Battery.BatteryInput;
 import fr.neriumprod.meteodatasspringapp.graphql.input.measure.MeasureInput;
 import fr.neriumprod.meteodatasspringapp.graphql.input.meteo.MeteoInput;
+import fr.neriumprod.meteodatasspringapp.graphql.response.measure.SaveMeasureResponse;
 import fr.neriumprod.meteodatasspringapp.services.measures.MeasureServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -62,7 +63,7 @@ public class MeteoDatasSpringAppApplication implements CommandLineRunner {
                     .outputVoltage(8.7f)
                     .build())
                 .build();
-            Measure savedMeasure = measureService.save(measureInput);
+            SaveMeasureResponse savedMeasure = measureService.save(measureInput);
             System.out.println(savedMeasure);
         };
     }

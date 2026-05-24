@@ -10,6 +10,7 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Controller
@@ -23,7 +24,7 @@ public class QueryMeasureResolver{
     }
 
     @QueryMapping
-    public Collection<Measure> getAllMeasures() {
+    public GetMeasuresCollectionResponse getAllMeasures() {
         return measureService.findAlls();
     }
 
@@ -31,4 +32,13 @@ public class QueryMeasureResolver{
     public GetMeasuresCollectionResponse getMeasuresByThingId(@Argument @NonNull String thingId) {
         return measureService.findByThingId(thingId);
     }
+
+    @QueryMapping
+    public GetMeasuresCollectionResponse getMeasuresByThingIdAndDateTimeBetween(
+            @Argument @NonNull String thingId,
+            @Argument @NonNull LocalDateTime timeStart,
+            @Argument @NonNull LocalDateTime timeEnd) {
+        return measureService.getMeasuresByThingIdAndDateTimeBetween(thingId, timeStart, timeEnd);
+    }
+
 }

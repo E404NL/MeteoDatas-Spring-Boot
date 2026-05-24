@@ -12,4 +12,5 @@ public interface MeasureRepository extends MongoRepository<Measure, String> {
     Collection<Measure> findByTimestampBetween(LocalDateTime start, LocalDateTime end);
     Collection<Measure> findByThingId(String thingID);
     void deleteByThingId(String thingID);
+    Collection<Measure> findByThingIdAndTimestampBetween(String thingID, LocalDateTime start, LocalDateTime end);
 }

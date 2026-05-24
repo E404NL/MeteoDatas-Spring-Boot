@@ -1,8 +1,11 @@
 type Query {
     # Measure
     getMeasureById(id: ID!): GetOneMeasureResponse
-    getAllMeasures: [Measure]
+    getAllMeasures: GetMeasuresCollectionResponse
     getMeasuresByThingId(thingId: String!): GetMeasuresCollectionResponse
+    getMeasuresByThingIdAndDateTimeBetween(thingId: String!,
+        timeStart: LocalDateTime!,
+        timeEnd: LocalDateTime!): GetMeasuresCollectionResponse
 }
 
 # ///////////////////////////// MUTATIONS /////////////////////////
@@ -79,4 +82,6 @@ type Battery {
     outputVoltage: Float
 }
 
-
+# ///////////////////////////// SCALAR /////////////////////////
+scalar DateTime
+scalar LocalDateTime

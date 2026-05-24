@@ -22,15 +22,7 @@ public class MutationMeasureResolver{
 
         @MutationMapping
         public SaveMeasureResponse saveMeasure(@Argument @NonNull MeasureInput measureInput) {
-                Measure persistedMeasure = measureService.save(measureInput);
-                if (persistedMeasure == null) {
-                        return new SaveMeasureResponse(false,
-                                "Measure is not saved because of an error",
-                                null);
-                }
-                return new SaveMeasureResponse(true,
-                        "Measure registred with success !",
-                        persistedMeasure);
+                return measureService.save(measureInput);
         }
 
         @MutationMapping
