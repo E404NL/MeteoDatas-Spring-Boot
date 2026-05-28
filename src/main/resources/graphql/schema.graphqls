@@ -96,6 +96,18 @@ type Battery {
     outputVoltage: Float
 }
 
+type User {
+    id: ID
+    username: String
+    password: String
+    email: String
+    firstName: String
+    lastName: String
+    birthDate: Date
+    createdAt: LocalDateTime
+}
+
 # ///////////////////////////// SCALAR /////////////////////////
 scalar DateTime
 scalar LocalDateTime
+scalar Date

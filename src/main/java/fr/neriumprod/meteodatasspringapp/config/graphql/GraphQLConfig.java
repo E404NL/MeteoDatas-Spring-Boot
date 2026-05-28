@@ -15,6 +15,7 @@ import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import tools.jackson.databind.ext.javatime.ser.LocalDateTimeSerializer;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -30,7 +31,8 @@ public class GraphQLConfig {
             @Override
             public void configure(RuntimeWiring.@NonNull Builder builder) {
                 builder.scalar(ExtendedScalars.DateTime)
-                        .scalar(localDateTimeScalar());
+                        .scalar(localDateTimeScalar())
+                        .scalar(ExtendedScalars.Date);
             }
         };
     }

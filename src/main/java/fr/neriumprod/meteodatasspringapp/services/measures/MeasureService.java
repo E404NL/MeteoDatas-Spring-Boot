@@ -13,12 +13,12 @@ import java.util.Collection;
 
 @Service
 public interface MeasureService {
-    public GetMeasuresCollectionResponse findAlls();
-    public Collection<Measure> findByTimestampBetween(LocalDateTime start, LocalDateTime end);
-    public GetMeasuresCollectionResponse findByThingId(String thingId);
-    public GetOneMeasureResponse findById(String id);
-    public SaveMeasureResponse save(MeasureInput measureInput);
-    public DeleteResponse delete(Measure measure);
-    public DeleteResponse deleteById(String id);
-    public DeleteResponse deleteByThingId(String thingId);
+    GetMeasuresCollectionResponse findAlls();
+    Collection<Measure> findByTimestampBetween(LocalDateTime start, LocalDateTime end);
+    GetMeasuresCollectionResponse findByThingId(String thingId);
+    GetOneMeasureResponse findById(String id);
+    SaveMeasureResponse save(MeasureInput measureInput);
+    DeleteResponse delete(Measure measure);
+    DeleteResponse deleteById(String id);
+    DeleteResponse deleteByThingId(String thingId);
 }
