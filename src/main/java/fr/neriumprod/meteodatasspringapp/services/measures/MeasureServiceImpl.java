@@ -172,13 +172,8 @@ public class MeasureServiceImpl implements MeasureService {
         }
         measure.setMeteo(meteo);
         Measure persistedMeasure = measureRepository.save(measure);
-        if (persistedMeasure == null) {
-            return new SaveMeasureResponse(false,
-                    "Measure is not saved because of an error",
-                    null);
-        }
         return new SaveMeasureResponse(true,
-                "Measure registred with success !",
+                "Measure registered with success !",
                 persistedMeasure);
     }
 
@@ -202,6 +197,7 @@ public class MeasureServiceImpl implements MeasureService {
      */
     @Override
     public DeleteResponse deleteById(String measureId) {
+        if (measureId != null && measureRepository.findById(measureId).isPresent())
         measureRepository.deleteById(measureId);
         return new DeleteResponse(
                 true,

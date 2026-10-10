@@ -17,12 +17,12 @@ import javax.sql.DataSource;
 @Configuration
 @EnableJpaRepositories(basePackages = {"fr.neriumprod.meteodatasspringapp.dao.postgres"},
                         entityManagerFactoryRef = "postgresEntityManagerFactory",
-                        transactionManagerRef = "postgresTransationManager")
+                        transactionManagerRef = "postgresTransactionManager")
 public class PostgresDataSourceConfig {
 
     @Bean(name = "postgresDataSource")
     @Primary
-    @ConfigurationProperties(prefix = "spring.datasource.postgres")
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource() {
         return new DriverManagerDataSource();
     }
@@ -33,7 +33,9 @@ public class PostgresDataSourceConfig {
     ) {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
+
         em.setPackagesToScan("fr.neriumprod.meteodatasspringapp.entities.postgres");
+
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setDatabasePlatform("org.hibernate.dialect.PostgreSQLDialect");
         vendorAdapter.setGenerateDdl(true);

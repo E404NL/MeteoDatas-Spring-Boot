@@ -1,7 +1,10 @@
 package fr.neriumprod.meteodatasspringapp.services.user;
 
+import fr.neriumprod.meteodatasspringapp.graphql.input.user.UserInput;
+import fr.neriumprod.meteodatasspringapp.graphql.response.DeleteResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.user.GetOneUserResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.user.GetUsersCollectionResponse;
+import fr.neriumprod.meteodatasspringapp.graphql.response.user.SaveUserResponse;
 import org.springframework.stereotype.Service;
 
 
@@ -15,5 +18,6 @@ public interface UserService {
     boolean existsUserByEmail(String email);
     boolean existsUserByUsername(String username);
     GetUsersCollectionResponse findAllUsers();
-
+    SaveUserResponse save(UserInput userInput);
+    DeleteResponse deleteUserById(Long userId);
 }

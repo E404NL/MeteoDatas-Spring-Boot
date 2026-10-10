@@ -9,16 +9,27 @@ type Query {
     getTemperaturesByThingIdAndDateTimeBetween(thingId: String!,
         timeStart: LocalDateTime!,
         timeEnd: LocalDateTime!): GetMeasureTemperatureDTOCollectionResponse
+
+    # User
+    getUserById(id: ID!): GetOneUserResponse
+    getUserByEmail(email: String!): GetOneUserResponse
+    getUserByCredentials(username: String!, password: String!): GetOneUserResponse
+    getAllUsers: GetUserCollectionResponse
 }
 
 # ///////////////////////////// MUTATIONS /////////////////////////
 
 type Mutation {
-    #Measure
+    # Measure
     saveMeasure(measureInput: MeasureInput!): SaveMeasureResponse
-    deleteById(measureId: ID!): DeleteResponse
+    deleteMeasureById(measureId: ID!): DeleteResponse
     deleteAllMeasures: DeleteResponse
     deleteMeasuresByThingId(thingId : String!): DeleteResponse
+
+    # User
+    saveUser(userInput: UserInput!): SaveUserResponse
+    deleteUserById(userId: ID!): DeleteResponse
+    deleteAllUsers: DeleteResponse
 }
 
 # ///////////////////////////// INPUTS /////////////////////////
@@ -39,8 +50,18 @@ input BatteryInput {
     outputVoltage: Float
 }
 
+input UserInput {
+    username: String
+    password: String
+    email: String
+    firstName: String
+    lastName: String
+    birthDate: Date
+}
+
 # ///////////////////////////// RESPONSES /////////////////////////
 
+# Measure
 type SaveMeasureResponse {
     success: Boolean
     message: String
@@ -65,6 +86,26 @@ type GetOneMeasureResponse{
     measure: Measure
 }
 
+# User
+type SaveUserResponse{
+    success: Boolean
+    message: String
+    user: User
+}
+
+type GetOneUserResponse{
+    success: Boolean
+    message: String
+    user: User
+}
+
+type GetUserCollectionResponse{
+    success: Boolean
+    message: String
+    users: [User]
+}
+
+# Global
 type DeleteResponse {
     success: Boolean
     message: String
