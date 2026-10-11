@@ -12,9 +12,10 @@ type Query {
 
     # User
     getUserById(id: ID!): GetOneUserResponse
-    getUserByEmail(email: String!): GetOneUserResponse
     getUserByCredentials(username: String!, password: String!): GetOneUserResponse
     getAllUsers: GetUserCollectionResponse
+    getUserByEmail(email: String!): GetUserCollectionResponse
+    getUsersByUsername(username: String!): GetUserCollectionResponse
 }
 
 # ///////////////////////////// MUTATIONS /////////////////////////

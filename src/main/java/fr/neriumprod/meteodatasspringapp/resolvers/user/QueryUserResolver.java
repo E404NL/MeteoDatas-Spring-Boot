@@ -25,8 +25,13 @@ public class QueryUserResolver {
     }
 
     @QueryMapping
-    public GetOneUserResponse getUserByEmail(@Argument @NonNull String email){
+    public GetUsersCollectionResponse getUserByEmail(@Argument @NonNull String email){
         return userService.findUserByEmail(email);
+    }
+
+    @QueryMapping
+    public GetUsersCollectionResponse getUsersByUsername(@Argument @NonNull String username){
+        return userService.findByUsername(username);
     }
 
     @QueryMapping

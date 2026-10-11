@@ -19,6 +19,11 @@ import java.util.Collection;
 public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
 
+    /**
+     *
+     * @param id
+     * @return one specific User determined  by the user id
+     */
     @Override
     public GetOneUserResponse findUserById(Long id) {
         User user = userRepository.findById(id).orElse(null);
@@ -34,21 +39,32 @@ public class UserServiceImpl implements UserService{
                 user);
     }
 
+    /**
+     *
+     * @param email
+     * @return one specific User determined by the user id
+     */
     @Override
-    public GetOneUserResponse findUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        if(user == null){
-            return new GetOneUserResponse(
+    public GetUsersCollectionResponse findUserByEmail(String email) {
+        Collection<User> users = userRepository.findByEmail(email);
+        if(users == null){
+            return new GetUsersCollectionResponse(
                     false,
                     "No User saved on database with this email : " + email,
                     null);
         }
-        return new GetOneUserResponse(
+        return new GetUsersCollectionResponse(
                 true,
                 "Success to get user with this email : " + email,
-                user);
+                users);
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return one User by credentials (username and psw)
+     */
     @Override
     public GetOneUserResponse findUserByUsernameAndPassword(String username, String password) {
         User user = userRepository.findByUsernameAndPassword(username, password);
@@ -64,6 +80,12 @@ public class UserServiceImpl implements UserService{
                 user);
     }
 
+    /**
+     *
+     * @param email
+     * @param password
+     * @return one User by credentials (mail and psw)
+     */
     @Override
     public GetOneUserResponse findUserByEmailAndPassword(String email, String password) {
         User user = userRepository.findByEmailAndPassword(email, password);
@@ -79,11 +101,21 @@ public class UserServiceImpl implements UserService{
                 user);
     }
 
+    /**
+     *
+     * @param email
+     * @return a boolean to confirme if user with this email exists in database
+     */
     @Override
     public boolean existsUserByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
 
+    /**
+     *
+     * @param username
+     * @return a boolean to confirme if user with this username exists in database
+     */
     @Override
     public boolean existsUserByUsername(String username) {
         return userRepository.existsByUsername(username);
@@ -93,6 +125,10 @@ public class UserServiceImpl implements UserService{
         return userRepository.existsById(id);
     }
 
+    /**
+     *
+     * @return absolutely ALL users saved on the database
+     */
     @Override
     public GetUsersCollectionResponse findAllUsers() {
         Collection<User> users = userRepository.findAll();
@@ -108,19 +144,24 @@ public class UserServiceImpl implements UserService{
                 users);
     }
 
+    /**
+     *
+     * @param username
+     * @return a user collection by username
+     */
     @Override
-    public GetOneUserResponse findByUsername(String username) {
-        User user = userRepository.findByUsername(username);
-        if(user == null){
-            new GetOneUserResponse(
+    public GetUsersCollectionResponse findByUsername(String username) {
+        Collection<User> users = userRepository.findByUsername(username);
+        if(users == null){
+            new GetUsersCollectionResponse(
                     false,
                     "Success to get user with this username : " + username,
                     null);
         }
-        return new GetOneUserResponse(
+        return new GetUsersCollectionResponse(
                 true,
-                "Success to get user with this id : " + username,
-                user);
+                "Success to get user(s) with this username : " + username,
+                users);
     }
 
     /**

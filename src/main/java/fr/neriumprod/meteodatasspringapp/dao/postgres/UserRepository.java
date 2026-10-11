@@ -9,9 +9,9 @@ import java.util.Date;
 
 @Repository("postgresUserRepository")
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findByUsername(String username);
+    Collection<User> findByUsername(String username);
 
-    User findByEmail(String email);
+    Collection<User> findByEmail(String email);
 
     User findByEmailAndPassword(String email, String password);
 

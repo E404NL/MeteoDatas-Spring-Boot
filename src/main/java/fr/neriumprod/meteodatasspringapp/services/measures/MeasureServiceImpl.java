@@ -25,7 +25,7 @@ public class MeasureServiceImpl implements MeasureService {
 
     /**
      *
-     * @return absolutly ALL measures saved on the database
+     * @return absolutely ALL measures saved on the database
      */
     @Override
     public GetMeasuresCollectionResponse findAlls() {
@@ -77,7 +77,7 @@ public class MeasureServiceImpl implements MeasureService {
     /**
      *
      * @param id, the id of the Measure saved
-     * @return one specific Measure determinated by the measure id
+     * @return one specific Measure determined by the measure id
      */
     @Override
     public GetOneMeasureResponse findById(String id) {
@@ -97,10 +97,10 @@ public class MeasureServiceImpl implements MeasureService {
     /**
      *
      * @param thingId, the id of the embedded system what's requesting
-     * @param timeStart, the debut of the timelaps including datas
-     * @param timeEnd, the end of the timelaps including datas
+     * @param timeStart, the debut of the timelapse including datas
+     * @param timeEnd, the end of the timelapse including datas
      * @return a Measure Collection with ALL measure saved by an embedded system
-     * between two determinated times
+     * between two determined times
      */
     public GetMeasuresCollectionResponse getMeasuresByThingIdAndDateTimeBetween(
             String thingId, LocalDateTime timeStart, LocalDateTime timeEnd){
