@@ -16,6 +16,7 @@ type Query {
     getAllUsers: GetUserCollectionResponse
     getUserByEmail(email: String!): GetUserCollectionResponse
     getUsersByUsername(username: String!): GetUserCollectionResponse
+    existsUserByEmail(email: String!): Boolean
 }
 
 # ///////////////////////////// MUTATIONS /////////////////////////

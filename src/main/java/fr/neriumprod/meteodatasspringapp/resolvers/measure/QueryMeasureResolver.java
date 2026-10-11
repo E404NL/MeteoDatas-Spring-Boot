@@ -1,6 +1,5 @@
 package fr.neriumprod.meteodatasspringapp.resolvers.measure;
 
-import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
 import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasureTemperatureDTOCollectionResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasuresCollectionResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetOneMeasureResponse;

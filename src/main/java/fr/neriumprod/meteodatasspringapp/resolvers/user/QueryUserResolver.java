@@ -40,4 +40,9 @@ public class QueryUserResolver {
             @Argument @NonNull String password){
         return userService.findUserByUsernameAndPassword(username, password);
     }
+
+    @QueryMapping
+    public Boolean existsUserByEmail(@Argument @NonNull String email){
+        return userService.existsUserByEmail(email);
+    }
 }
