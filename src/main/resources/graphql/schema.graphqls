@@ -17,6 +17,11 @@ type Query {
     getUserByEmail(email: String!): GetUserCollectionResponse
     getUsersByUsername(username: String!): GetUserCollectionResponse
     existsUserByEmail(email: String!): Boolean
+
+    # Station
+    getStationById(id: ID!): GetOneStationResponse
+    getAllStations: GetStationCollectionResponse
+    getStationsByUserId(id: Long!): GetStationCollectionResponse
 }
 
 # ///////////////////////////// MUTATIONS /////////////////////////
@@ -32,6 +37,9 @@ type Mutation {
     saveUser(userInput: UserInput!): SaveUserResponse
     deleteUserById(userId: ID!): DeleteResponse
     deleteAllUsers: DeleteResponse
+
+    # Station
+    saveStation(stationInput: StationInput!): SaveStationResponse
 }
 
 # ///////////////////////////// INPUTS /////////////////////////
@@ -50,6 +58,15 @@ input MeteoInput {
 input BatteryInput {
     batteryState: Int
     outputVoltage: Float
+}
+
+input StationInput {
+    userId: Long
+    startServiceDate: LocalDateTime
+    lastMeasureDate: LocalDateTime
+    totalMeasures: Long
+    firmwareVersion: String
+    batteryInput: BatteryInput
 }
 
 input UserInput {
@@ -107,6 +124,25 @@ type GetUserCollectionResponse{
     users: [User]
 }
 
+# Station
+type SaveStationResponse {
+    success: Boolean
+    message: String
+    station: Station
+}
+
+type GetOneStationResponse{
+    success: Boolean
+    message: String
+    user: Station
+}
+
+type GetStationCollectionResponse{
+    success: Boolean
+    message: String
+    stations: [Station]
+}
+
 # Global
 type DeleteResponse {
     success: Boolean
@@ -120,6 +156,16 @@ type Measure {
     thingId: String
     timestamp: LocalDateTime
     meteo: Meteo
+    battery: Battery
+}
+
+type Station {
+    id: ID
+    userId: Long
+    startServiceDate: LocalDateTime
+    lastMeasureDate: LocalDateTime
+    totalMeasures: Long
+    firmwareVersion: String
     battery: Battery
 }
 
@@ -154,3 +200,4 @@ type User {
 scalar DateTime
 scalar LocalDateTime
 scalar Date
+scalar Long

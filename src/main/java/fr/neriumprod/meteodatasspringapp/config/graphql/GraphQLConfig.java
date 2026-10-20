@@ -32,7 +32,8 @@ public class GraphQLConfig {
             public void configure(RuntimeWiring.@NonNull Builder builder) {
                 builder.scalar(ExtendedScalars.DateTime)
                         .scalar(localDateTimeScalar())
-                        .scalar(ExtendedScalars.Date);
+                        .scalar(ExtendedScalars.Date)
+                        .scalar(ExtendedScalars.GraphQLLong);
             }
         };
     }
