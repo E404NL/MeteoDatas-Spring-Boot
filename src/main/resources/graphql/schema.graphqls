@@ -40,6 +40,10 @@ type Mutation {
 
     # Station
     saveStation(stationInput: StationInput!): SaveStationResponse
+    deleteStationById(id: ID!): DeleteResponse
+    deleteAllStations: DeleteResponse
+    changeUserStation(stationId: ID!, userId: ID): GetOneStationResponse
+    checkTotalMeasures(stationId: ID!): GetOneStationResponse
 }
 
 # ///////////////////////////// INPUTS /////////////////////////
@@ -134,7 +138,7 @@ type SaveStationResponse {
 type GetOneStationResponse{
     success: Boolean
     message: String
-    user: Station
+    station: Station
 }
 
 type GetStationCollectionResponse{

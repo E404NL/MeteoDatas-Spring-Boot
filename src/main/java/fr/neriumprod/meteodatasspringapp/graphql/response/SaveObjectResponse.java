@@ -6,5 +6,5 @@ import lombok.AllArgsConstructor;
 public class SaveObjectResponse<T> {
     private boolean success;
     private String message;
-    private T T;
+    private T object;
 }

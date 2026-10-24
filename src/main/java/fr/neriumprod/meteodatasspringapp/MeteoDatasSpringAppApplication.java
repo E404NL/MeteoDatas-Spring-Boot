@@ -47,42 +47,42 @@ public class MeteoDatasSpringAppApplication implements CommandLineRunner {
     @Bean
     CommandLineRunner start() {
         return args -> {
-            UserInput userInput = UserInput.builder()
-                    .firstName("Florent")
-                    .lastName("Kopro")
-                    .email("kopro.flowo@rienafoutre.cum")
-                    .username("Konichiwa")
-                    .password("*UwU_123456789*")
-                    .birthDate(Calendar.getInstance().getTime())
-                    .build();
-            SaveUserResponse savedUser = userService.save(userInput);
-            System.out.println(savedUser);
-
-            BatteryInput batteryInput = BatteryInput.builder()
-                    .batteryState(72)
-                    .outputVoltage(8.7f)
-                    .build();
-
-            StationInput stationInput = StationInput.builder()
-                    .userId(savedUser.getUser().getId())
-                    .totalMeasures(0L)
-                    .firmwareVersion("V0.1")
-                    .batteryInput(batteryInput)
-                    .build();
-            SaveStationResponse savedStation = stationService.save(stationInput);
-            System.out.println(savedStation);
-
-            MeasureInput measureInput = MeasureInput.builder()
-                .thingId(savedStation.getStation().getId()).
-                meteo(MeteoInput.builder()
-                    .temperature(21.4f)
-                    .humidityRate(65.2f)
-                    .airPressure(2L)
-                    .build())
-                .battery(batteryInput)
-                .build();
-            SaveMeasureResponse savedMeasure = measureService.save(measureInput);
-            System.out.println(savedMeasure);
+//            UserInput userInput = UserInput.builder()
+//                    .firstName("Florent")
+//                    .lastName("Kopro")
+//                    .email("kopro.flowo@rienafoutre.cum")
+//                    .username("Konichiwa")
+//                    .password("*UwU_123456789*")
+//                    .birthDate(Calendar.getInstance().getTime())
+//                    .build();
+//            SaveUserResponse savedUser = userService.save(userInput);
+//            System.out.println(savedUser);
+//
+//            BatteryInput batteryInput = BatteryInput.builder()
+//                    .batteryState(72)
+//                    .outputVoltage(8.7f)
+//                    .build();
+//
+//            StationInput stationInput = StationInput.builder()
+//                    .userId(savedUser.getUser().getId())
+//                    .totalMeasures(0L)
+//                    .firmwareVersion("V0.1")
+//                    .batteryInput(batteryInput)
+//                    .build();
+//            SaveStationResponse savedStation = stationService.save(stationInput);
+//            System.out.println(savedStation);
+//
+//            MeasureInput measureInput = MeasureInput.builder()
+//                .thingId(savedStation.getStation().getId()).
+//                meteo(MeteoInput.builder()
+//                    .temperature(21.4f)
+//                    .humidityRate(65.2f)
+//                    .airPressure(2L)
+//                    .build())
+//                .battery(batteryInput)
+//                .build();
+//            SaveMeasureResponse savedMeasure = measureService.save(measureInput);
+//            System.out.println(savedMeasure);
         };
     }
 }

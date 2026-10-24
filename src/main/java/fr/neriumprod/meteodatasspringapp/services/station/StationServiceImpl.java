@@ -1,12 +1,17 @@
 package fr.neriumprod.meteodatasspringapp.services.station;
 
+import fr.neriumprod.meteodatasspringapp.dao.mongo.MeasureRepository;
 import fr.neriumprod.meteodatasspringapp.dao.mongo.StationRepository;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Battery;
+import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Station;
 import fr.neriumprod.meteodatasspringapp.graphql.input.station.StationInput;
+import fr.neriumprod.meteodatasspringapp.graphql.response.DeleteResponse;
+import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasuresCollectionResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.station.GetOneStationResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.station.GetStationCollectionResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.station.SaveStationResponse;
+import fr.neriumprod.meteodatasspringapp.services.measures.MeasureServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +23,7 @@ import java.util.Collections;
 @AllArgsConstructor
 public class StationServiceImpl implements StationService{
     private StationRepository stationRepository;
+    private MeasureRepository measureRepository;
 
     /**
      *
@@ -46,30 +52,81 @@ public class StationServiceImpl implements StationService{
     /**
      *
      * @param id
-     * @return the updated station with the new total measure and last measure date
+     * @return DeleteResponse to confirm
      */
-    public GetOneStationResponse newMeasureUpdated(String id){
+    public DeleteResponse deleteStationById(String id){
         Station station = stationRepository.findById(id).orElse(null);
         if(station != null){
-            station.setTotalMeasures(station.getTotalMeasures() + 1);
-            station.setLastMeasureDate(LocalDateTime.now());
-            Station updatedStation = stationRepository.save(station);
+            stationRepository.delete(station);
+            return new DeleteResponse(true, "Success to delete the station with the ID " + id);
+        }
+        return new DeleteResponse(false, "No station found with this ID to delete");
+    }
+
+    /**
+     * Delete all stations in database
+     */
+    public void deleteAllStations(){
+        stationRepository.deleteAll();
+    }
+
+    /**
+     *
+     * @param stationId
+     * @param userId
+     * @return the station with new userId updated
+     */
+    public GetOneStationResponse changeUserId(String stationId, Long userId){
+        Station station = stationRepository.findById(stationId).orElse(null);
+        if(station != null){
+            station.setUserId(userId);
+            Station stationUpdated = stationRepository.save(station);
             return new GetOneStationResponse(
                     true,
-                    "Success to update this station!",
-                    updatedStation);
-        }else{
-            return new GetOneStationResponse(
-                    false,
-                    "No station saved with this ID on database.",
-                    null);
+                    "Success to update user on this station!",
+                    stationUpdated);
         }
+        return new GetOneStationResponse(
+                false,
+                "No station saved in database with this ID.",
+                null);
+    }
+
+    /**
+     *
+     * @param stationId
+     * @return the station with the totalMeasures updated
+     */
+    public GetOneStationResponse checkTotalMeasures(String stationId){
+        Station station = stationRepository.findById(stationId).orElse(null);
+        if(station != null){
+            Collection<Measure> measures = measureRepository.findByThingId(stationId);
+            Long nbStationMeasures = station.getTotalMeasures();
+            int nbMeasuresSaved = measures.size();
+            if(nbStationMeasures != nbMeasuresSaved){
+                station.setTotalMeasures((long) nbMeasuresSaved);
+                Station updatedStation = stationRepository.save(station);
+                return new GetOneStationResponse(
+                        true,
+                        "Station " + stationId + " is updated on total measures : " + nbMeasuresSaved,
+                        updatedStation);
+            }else if(nbMeasuresSaved == nbStationMeasures){
+                return new GetOneStationResponse(
+                        false,
+                        "The total measure is already updated.",
+                        station);
+            }
+        }
+        return new GetOneStationResponse(
+                false,
+                "No Station found with this ID.",
+                null);
     }
 
     /**
      *
      * @param id, the station id
-     * @return a Station with his datas
+     * @return a Station with his data's
      */
     @Override
     public GetOneStationResponse findById(String id) {

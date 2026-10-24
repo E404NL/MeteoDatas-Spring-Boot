@@ -1,16 +1,20 @@
 package fr.neriumprod.meteodatasspringapp.services.measures;
 
 import fr.neriumprod.meteodatasspringapp.dao.mongo.MeasureRepository;
+import fr.neriumprod.meteodatasspringapp.dao.mongo.StationRepository;
 import fr.neriumprod.meteodatasspringapp.dto.MeasureTemperatureDTO;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Battery;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Measure;
 import fr.neriumprod.meteodatasspringapp.entities.mongo.Meteo;
+import fr.neriumprod.meteodatasspringapp.entities.mongo.Station;
 import fr.neriumprod.meteodatasspringapp.graphql.input.measure.MeasureInput;
 import fr.neriumprod.meteodatasspringapp.graphql.response.DeleteResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasureTemperatureDTOCollectionResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetMeasuresCollectionResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.measure.GetOneMeasureResponse;
 import fr.neriumprod.meteodatasspringapp.graphql.response.measure.SaveMeasureResponse;
+import fr.neriumprod.meteodatasspringapp.graphql.response.station.SaveStationResponse;
+import fr.neriumprod.meteodatasspringapp.services.station.StationServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +26,7 @@ import java.util.Collections;
 @AllArgsConstructor
 public class MeasureServiceImpl implements MeasureService {
     private MeasureRepository measureRepository;
+    private StationRepository stationRepository;
 
     /**
      *
@@ -172,8 +177,24 @@ public class MeasureServiceImpl implements MeasureService {
         }
         measure.setMeteo(meteo);
         Measure persistedMeasure = measureRepository.save(measure);
-        return new SaveMeasureResponse(true,
-                "Measure registered with success !",
+        Station station = stationRepository.findById(measureInput.getThingId()).orElse(null);
+        if(station != null) {
+            station.setTotalMeasures(station.getTotalMeasures() + 1);
+            station.setLastMeasureDate(LocalDateTime.now());
+            Station updatedStation = stationRepository.save(station);
+            if (updatedStation != null) {
+                return new SaveMeasureResponse(true,
+                        "Measure registered with success !",
+                        persistedMeasure);
+            }else{
+                return new SaveMeasureResponse(false,
+                        "An error is appeared during the process to update the station after saving this measure",
+                        persistedMeasure);
+            }
+        }
+
+        return new SaveMeasureResponse(false,
+                "An error is appeared during the process to update the station after saving this measure",
                 persistedMeasure);
     }
 
@@ -197,11 +218,14 @@ public class MeasureServiceImpl implements MeasureService {
      */
     @Override
     public DeleteResponse deleteById(String measureId) {
-        if (measureId != null && measureRepository.findById(measureId).isPresent())
-        measureRepository.deleteById(measureId);
-        return new DeleteResponse(
-                true,
-                "Success to delete this measure : " + measureId);
+        if (measureId != null && measureRepository.findById(measureId).isPresent()) {
+            measureRepository.deleteById(measureId);
+            return new DeleteResponse(
+                    true,
+                    "Success to delete this measure : " + measureId);
+        }
+        return new DeleteResponse(false, "No measure found with this ID,\n" +
+                "or id parameter is null.");
     }
 
     /**
