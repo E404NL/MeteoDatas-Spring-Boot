@@ -31,7 +31,7 @@ public class MutationMeasureResolver{
         }
 
         @MutationMapping
-        public DeleteResponse deleteById(@Argument @NonNull String measureId) {
+        public DeleteResponse deleteMeasureById(@Argument @NonNull String measureId) {
                 return measureService.deleteById(measureId);
         }
 

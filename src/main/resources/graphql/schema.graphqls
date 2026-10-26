@@ -9,16 +9,41 @@ type Query {
     getTemperaturesByThingIdAndDateTimeBetween(thingId: String!,
         timeStart: LocalDateTime!,
         timeEnd: LocalDateTime!): GetMeasureTemperatureDTOCollectionResponse
+
+    # User
+    getUserById(id: ID!): GetOneUserResponse
+    getUserByCredentials(username: String!, password: String!): GetOneUserResponse
+    getAllUsers: GetUserCollectionResponse
+    getUserByEmail(email: String!): GetUserCollectionResponse
+    getUsersByUsername(username: String!): GetUserCollectionResponse
+    existsUserByEmail(email: String!): Boolean
+
+    # Station
+    getStationById(id: ID!): GetOneStationResponse
+    getAllStations: GetStationCollectionResponse
+    getStationsByUserId(id: Long!): GetStationCollectionResponse
 }
 
 # ///////////////////////////// MUTATIONS /////////////////////////
 
 type Mutation {
-    #Measure
+    # Measure
     saveMeasure(measureInput: MeasureInput!): SaveMeasureResponse
-    deleteById(measureId: ID!): DeleteResponse
+    deleteMeasureById(measureId: ID!): DeleteResponse
     deleteAllMeasures: DeleteResponse
     deleteMeasuresByThingId(thingId : String!): DeleteResponse
+
+    # User
+    saveUser(userInput: UserInput!): SaveUserResponse
+    deleteUserById(userId: ID!): DeleteResponse
+    deleteAllUsers: DeleteResponse
+
+    # Station
+    saveStation(stationInput: StationInput!): SaveStationResponse
+    deleteStationById(id: ID!): DeleteResponse
+    deleteAllStations: DeleteResponse
+    changeUserStation(stationId: ID!, userId: ID): GetOneStationResponse
+    checkTotalMeasures(stationId: ID!): GetOneStationResponse
 }
 
 # ///////////////////////////// INPUTS /////////////////////////
@@ -39,8 +64,27 @@ input BatteryInput {
     outputVoltage: Float
 }
 
+input StationInput {
+    userId: Long
+    startServiceDate: LocalDateTime
+    lastMeasureDate: LocalDateTime
+    totalMeasures: Long
+    firmwareVersion: String
+    batteryInput: BatteryInput
+}
+
+input UserInput {
+    username: String
+    password: String
+    email: String
+    firstName: String
+    lastName: String
+    birthDate: Date
+}
+
 # ///////////////////////////// RESPONSES /////////////////////////
 
+# Measure
 type SaveMeasureResponse {
     success: Boolean
     message: String
@@ -65,6 +109,45 @@ type GetOneMeasureResponse{
     measure: Measure
 }
 
+# User
+type SaveUserResponse{
+    success: Boolean
+    message: String
+    user: User
+}
+
+type GetOneUserResponse{
+    success: Boolean
+    message: String
+    user: User
+}
+
+type GetUserCollectionResponse{
+    success: Boolean
+    message: String
+    users: [User]
+}
+
+# Station
+type SaveStationResponse {
+    success: Boolean
+    message: String
+    station: Station
+}
+
+type GetOneStationResponse{
+    success: Boolean
+    message: String
+    station: Station
+}
+
+type GetStationCollectionResponse{
+    success: Boolean
+    message: String
+    stations: [Station]
+}
+
+# Global
 type DeleteResponse {
     success: Boolean
     message: String
@@ -77,6 +160,16 @@ type Measure {
     thingId: String
     timestamp: LocalDateTime
     meteo: Meteo
+    battery: Battery
+}
+
+type Station {
+    id: ID
+    userId: Long
+    startServiceDate: LocalDateTime
+    lastMeasureDate: LocalDateTime
+    totalMeasures: Long
+    firmwareVersion: String
     battery: Battery
 }
 
@@ -96,6 +189,19 @@ type Battery {
     outputVoltage: Float
 }
 
+type User {
+    id: ID
+    username: String
+    password: String
+    email: String
+    firstName: String
+    lastName: String
+    birthDate: Date
+    createdAt: LocalDateTime
+}
+
 # ///////////////////////////// SCALAR /////////////////////////
 scalar DateTime
 scalar LocalDateTime
+scalar Date
+scalar Long

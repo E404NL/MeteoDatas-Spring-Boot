@@ -1,0 +1,23 @@
+package fr.neriumprod.meteodatasspringapp.services.user;
+
+import fr.neriumprod.meteodatasspringapp.graphql.input.user.UserInput;
+import fr.neriumprod.meteodatasspringapp.graphql.response.DeleteResponse;
+import fr.neriumprod.meteodatasspringapp.graphql.response.user.GetOneUserResponse;
+import fr.neriumprod.meteodatasspringapp.graphql.response.user.GetUsersCollectionResponse;
+import fr.neriumprod.meteodatasspringapp.graphql.response.user.SaveUserResponse;
+import org.springframework.stereotype.Service;
+
+
+@Service
+public interface UserService {
+    GetOneUserResponse findUserById(Long id);
+    GetOneUserResponse findUserByUsernameAndPassword(String username, String password);
+    GetOneUserResponse findUserByEmailAndPassword(String email, String password);
+    GetUsersCollectionResponse findUserByEmail(String email);
+    GetUsersCollectionResponse findByUsername(String username);
+    boolean existsUserByEmail(String email);
+    boolean existsUserByUsername(String username);
+    GetUsersCollectionResponse findAllUsers();
+    SaveUserResponse save(UserInput userInput);
+    DeleteResponse deleteUserById(Long userId);
+}
